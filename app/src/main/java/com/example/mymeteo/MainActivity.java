@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }catch(IOException e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return cityName;
     }
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     weatherRVAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {

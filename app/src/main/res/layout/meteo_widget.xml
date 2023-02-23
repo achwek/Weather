@@ -1,19 +1,54 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Widget.MyMeteo.AppWidget.Container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:theme="@style/Theme.MyMeteo.AppWidgetContainer">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MyMeteo.AppWidgetContainer"
+    android:id="@+id/widget_layout">
 
-    <TextView
-        android:id="@+id/tvwidget"
-        style="@style/Widget.MyMeteo.AppWidget.InnerView"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/app_widget_description"
-        android:text="@string/appwidget_text"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:background="@drawable/card_back"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/idTVCity"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="City Name"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/idTVTemp"
+            android:gravity="center"
+            android:text="20"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/idTVCity"
+            android:textColor="@color/white"
+            />
+
+        <ImageView
+            android:id="@+id/idIVCond"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/idTVTemp"
+            android:layout_marginTop="-70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="5dp"
+            android:padding="4dp"
+            android:src="@mipmap/ic_launcher" />
+
+    </RelativeLayout>
+
+
 </RelativeLayout>

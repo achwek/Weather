@@ -6,7 +6,7 @@
     </style>
 
     <style name="Widget.MyMeteo.AppWidget.InnerView" parent="android:Widget">
-        <item name="android:background">@color/light_blue_600</item>
+        <item name="android:background">#27039BE5</item>
         <item name="android:textColor">@color/light_blue_50</item>
         <item name="cornerRadius">10dp</item>
     </style>
