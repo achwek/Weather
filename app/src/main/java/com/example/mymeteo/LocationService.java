@@ -76,7 +76,7 @@ public class LocationService extends Service {
         // Get the last known location from the location manager
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             return location;
         }
         return null;

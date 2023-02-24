@@ -13,6 +13,11 @@ public class WeatherRVModal {
         this.icon = icon;
         this.windspeed = windspeed;
     }
+    public WeatherRVModal( String temperature, String icon) {
+
+        this.temperature = temperature;
+        this.icon = icon;
+    }
 
     public String getTime() {
         return time;

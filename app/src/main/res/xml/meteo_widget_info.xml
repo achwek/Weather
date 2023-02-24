@@ -5,7 +5,7 @@
     android:initialLayout="@layout/meteo_widget"
     android:minWidth="500dp"
     android:minHeight="90dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/meteo"
     android:previewLayout="@layout/meteo_widget"
     android:resizeMode="horizontal|vertical"
     android:targetCellWidth="1"

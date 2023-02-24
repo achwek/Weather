@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 cityName = getCityName(location.getLongitude(),location.getLatitude());
+                if(cityName.equals("Radès")){cityName="Radis";}
+                Toast.makeText(MainActivity.this,cityName,Toast.LENGTH_LONG).show();
+
                 getWeatherInfo(cityName);
             }catch (NullPointerException ex){
                 ex.printStackTrace();
@@ -142,8 +145,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getWeatherInfo(String cityName){
-        String url = "https://api.weatherapi.com/v1/forecast.json?key=8384ce731c8c416892e111040231802&q="+cityName+"&days=1&aqi=yes&alerts=yes&fbclid=IwAR3cgprPItyFmp8DDtBC5sHhourQgr3tORXcRmYBE9Rjb0b_OiAycsBpv8o";
-        cityNameTV.setText(cityName);
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=8384ce731c8c416892e111040231802&q="+cityName+"&days=1";
+
+        if(cityName.equals("Radès")){
+            url = "https://api.weatherapi.com/v1/forecast.json?key=8384ce731c8c416892e111040231802&q=Radis&days=1";
+
+        }
+          cityNameTV.setText(cityName);
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
