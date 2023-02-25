@@ -41,7 +41,7 @@ public class MeteoWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, LocationService.class);
         context.startService(intent);
 
-        // Get the current location from the location service
+        // Get the current location from the location service    ;|
         Location location = LocationService.getLastKnownLocation(context);
 
         // If location data is available, update the widget with the location information

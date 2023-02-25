@@ -53,7 +53,9 @@ public class LocationService extends Service {
             // Request location updates with a minimum time interval of 1 second and a minimum distance interval of 10 meters
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locationListener);
         }
-        return START_STICKY;
+        stopSelf();
+
+        return START_NOT_STICKY;
     }
 
     @Nullable
@@ -73,12 +75,19 @@ public class LocationService extends Service {
     }
 
     public static Location getLastKnownLocation(Context context) {
+        Location location = null;
+
         // Get the last known location from the location manager
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+         location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             return location;
         }
-        return null;
-    }
-}
+        if (location == null) {
+            // Return a default location if no last known location is available
+            location = new Location("");
+            location.setLatitude(36.8065);
+            location.setLongitude(10.1815);
+        }
+        return location;
+    }    }

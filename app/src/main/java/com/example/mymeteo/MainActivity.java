@@ -7,7 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.DownloadManager;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -44,12 +48,15 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int appwidgetId= AppWidgetManager.INVALID_APPWIDGET_ID;
+
+
     private RelativeLayout homeRl;
     private ProgressBar loadingPB;
     private TextView cityNameTV,temperatureTV,conditionTV;
     private RecyclerView weatherRV;
     private TextInputEditText cityEdt;
-    private ImageView backIV,iconIV,searchIV;
+    private ImageView backIV,iconIV,searchIV,refrechIV;
     private ArrayList<WeatherRVModal> weatherRVModalArrayList;
     private WeatherRVAdapter weatherRVAdapter;
     private LocationManager locationManager;
@@ -72,10 +79,41 @@ public class MainActivity extends AppCompatActivity {
         iconIV = findViewById(R.id.idTVIcon);
         searchIV = findViewById(R.id.idIVSearch);
         weatherRV = findViewById(R.id.idRvWeather);
+        refrechIV=findViewById(R.id.idIVRefrech);
         weatherRVModalArrayList = new ArrayList<>();
         weatherRVAdapter = new WeatherRVAdapter(this,weatherRVModalArrayList);
         weatherRV.setAdapter(weatherRVAdapter);
 
+
+
+        locationRefrech();
+
+        searchIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String city = cityEdt.getText().toString();
+                if (city.isEmpty()){
+                    Toast.makeText(MainActivity.this,"Please Enter City Name",Toast.LENGTH_SHORT).show();
+                }else{
+                    cityNameTV.setText(cityName);
+                    getWeatherInfo(city);
+                }
+            }
+        });
+        refrechIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               locationRefrech();
+                cityEdt.setText("");
+
+            }
+        });
+
+
+
+    }
+
+    private void locationRefrech() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSION_CODE);
@@ -90,24 +128,9 @@ public class MainActivity extends AppCompatActivity {
                 ex.printStackTrace();
             }
         }
-
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         cityName = getCityName(location.getLongitude(), location.getLatitude());
         getWeatherInfo(cityName);
-
-        searchIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String city = cityEdt.getText().toString();
-                if (city.isEmpty()){
-                    Toast.makeText(MainActivity.this,"Please Enter City Name",Toast.LENGTH_SHORT).show();
-                }else{
-                    cityNameTV.setText(cityName);
-                    getWeatherInfo(city);
-                }
-            }
-        });
-
     }
 
     @Override
@@ -189,6 +212,23 @@ public class MainActivity extends AppCompatActivity {
                         weatherRVModalArrayList.add(new WeatherRVModal(time,temper,img,wind));
                     }
                     weatherRVAdapter.notifyDataSetChanged();
+                    // Storing data into SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+
+                    // Creating an Editor object to edit(write to the file)
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+                    // Storing the key and its value as the data fetched from edittext
+                    myEdit.putString("cityName", cityName);
+                    myEdit.putString("temperature", temperature);
+
+                    // Once the changes have been made, we need to commit to apply those changes made,
+                    // otherwise, it will throw an error
+                    myEdit.apply();
+                    Context context = getApplicationContext();
+                    Intent intent = new Intent(context, WeatherWidgetReceiver.class);
+                    intent.setAction("com.example.mymeteo.action.UPDATE_WIDGET");
+                    context.sendBroadcast(intent);
 
                 } catch (JSONException e) {
                     //e.printStackTrace();
@@ -204,4 +244,6 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
     }
+
+
 }

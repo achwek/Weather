@@ -3,5 +3,7 @@
     <string name="appwidget_text">Méteo</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+    <string name="tempurature"><b><u>20°C</u></b></string>
+    <string name="cityName"><b><i>City Name</i></b></string>
     <string name="app_widget_description">This is an app widget description</string>
 </resources>
